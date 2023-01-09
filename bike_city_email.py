@@ -8,24 +8,14 @@ import os
 save_file = open('citybike_dtf.csv', 'wt', encoding= 'utf-8')
 
 def main():
-    
+
 
     url = 'http://api.citybik.es/v2/networks'
     data = requests.get(url).json()
     recipients = { "PL" : "oskarzak1999@gmail.com", "RU" : "patka379@onet.pl"  }
-    for country in recipients:
-        size = (len(data['networks']))
-        list = []
-        number = 0
-        while number < size:
-            if country == data['networks'][number]['location']['country']:
-                list.append(data['networks'][number]['location'])
-            number +=1
-        
-        df_b = pd.DataFrame(list)
-        print(df_b)
-        print("operacja 1 zostala zakonczona")
-        class DailyDigestEmail:
+
+    
+    class DailyDigestEmail:
             def __init__(self):
                 self.content = {"tabela": {"include": True, "content": str(df_b)}}
 
@@ -60,6 +50,19 @@ def main():
                     text += f'"{self.content["tabela"]["content"]}"\n\n'
 
                 return {'text': text}
+    for country in recipients:
+        size = (len(data['networks']))
+        list = []
+        number = 0
+        while number < size:
+            if country == data['networks'][number]['location']['country']:
+                list.append(data['networks'][number]['location'])
+            number +=1
+        
+        df_b = pd.DataFrame(list)
+        print(df_b)
+        print("operacja 1 zostala zakonczona")
+        
 
         if __name__ == "__main__":
             PASSWORD = os.environ.get('PASS')
