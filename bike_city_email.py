@@ -4,8 +4,6 @@ import datetime
 import smtplib
 from email.message import EmailMessage
 import os
-#ang, wybieranie kraju z którego jest uzytkownik, do CSV, wysylka mailem, ######requests
-save_file = open('citybike_dtf.csv', 'wt', encoding= 'utf-8')
 
 def main():
     """_summary_:
@@ -20,19 +18,8 @@ def main():
     url = 'http://api.citybik.es/v2/networks'
     data = requests.get(url).json()
     recipients = { "PL" : "Recipient1@mail.com", "RU" : "Recipient2@mail.com"  }
-    for country in recipients:
-        size = (len(data['networks']))
-        list = []
-        number = 0
-        while number < size:
-            if country == data['networks'][number]['location']['country']:
-                list.append(data['networks'][number]['location'])
-            number +=1
-        
-        df_b = pd.DataFrame(list)
-        print(df_b)
-        print("operacja 1 zostala zakonczona")
-        class DailyDigestEmail:
+
+    class DailyDigestEmail:
             """_summary_
             The class determines the contents of the message, and all the data necessary to send it
             """
@@ -41,8 +28,8 @@ def main():
 
                 self.recipients_list = [recipients[country]]
 
-                self.sender_credentials = {'email': 'Sender@mail.com',
-                                        'password': 'SenderPassword'}
+                self.sender_credentials = {'email': 'Sender@email.com',
+                                        'password': 'YOUR_PASSWORD'}
 
             def send_email(self):
                 """_summary_
@@ -74,6 +61,19 @@ def main():
                     text += f'"{self.content["Table"]["content"]}"\n\n'
 
                 return {'text': text}
+
+    for country in recipients:
+        size = (len(data['networks']))
+        list = []
+        number = 0
+        while number < size:
+            if country == data['networks'][number]['location']['country']:
+                list.append(data['networks'][number]['location'])
+            number +=1
+        
+        df_b = pd.DataFrame(list)
+        print(df_b)
+        
 
         if __name__ == "__main__":
             PASSWORD = os.environ.get('PASS')
