@@ -7,7 +7,7 @@ import os
 
 def main():
     """_summary_:
-    The function allows you to find bike parks in individual countries and send their location to users by e-mail
+    The function allows you to find bike parks in individual  countries and send their location to users by e-mail 
 
     Returns:
         _type_: _description_
